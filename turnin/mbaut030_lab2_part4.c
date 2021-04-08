@@ -19,27 +19,27 @@ int main(void) {
 	DDRC = 0x00; PORTC = 0xFF;
 	DDRD = 0xFF; PORTD = 0x00;
     /* Insert your solution below */
-	unsigned char tmpA = 0x00;
-	unsigned char tmpB = 0x00;
-	unsigned char tmpC = 0x00;
-	unsigned char tmpD = 0x00;
+	unsigned char tmpA;
+	unsigned char tmpB;
+	unsigned char tmpC;
 	unsigned char total = 0x00;
     while (1) {
 	tmpA = PINA;
 	tmpB = PINB;
 	tmpC = PINC;
-	tmpD = 0x00;
 	total = tmpA + tmpB + tmpC;
-	
-	if (total > 0x8C) {
-		tmpD = 0x01;
-	}
-	if ((tmpA - tmpC) || (tmpC - tmpA) > 0x50) {
-		tmpD = tmpD | 0x02;
-	}
 
-	tmpD = tmpD | (total & 0xFC);
-	PORTD = tmpD;
+	total = total >> 2;
+
+	PORTD = total;
+	PORTD = PORTD & 0xFC;
+
+	if(total > 140) {
+		PORTD = PORTD + 1;
+	}
+	if((tmpA - tmpC) > 80 || (tmpC - tmpA) > 80) {
+		PORTD = PORTD + 2;
+	}
     }
     return 1;
 }
